@@ -15,10 +15,9 @@ contract GnosisNominee is Module {
     event NomineeModuleSetup(address indexed initiator, address indexed avatar);
 
 
-    /// @param _owner Address of the owner
-    /// @param _avatar Address of the avatar (e.g. a Gnosis Safe)
-    /// @param _target Address of the contract that will call exec function
-    /// @param _nominee Address of the nominee
+    // @param _owner Address of the owner
+    // @param _avatar Address of the avatar (e.g. a Gnosis Safe)
+    // @param _target Address of the contract that will call exec function
 
     constructor(
         address _owner,
@@ -54,23 +53,22 @@ contract GnosisNominee is Module {
     }
 
 
+    // Each owner of the gnosis safe can set their nominee
+
     function setNominee(address _nominee, uint256 _takeOverTime) public {
-        require(IGnosisSafe(avatar).isOwner(msg.sender),"You need be owner of the safe")
+        require(IGnosisSafe(avatar).isOwner(msg.sender),"You need be an owner of the safe")
         nominee[msg.sender] = _nominee;
-        takeOverTime[msg.sender] = _takeOverTime;
+        //takeOverTime[msg.sender] = _takeOverTime;
     }
 
 
+    // The nominee's of the gnosis safe can transfer ownership using below function
 
-    function takeOver(address _oldOwner) public {
+    function transferSafeOwnership(address _oldOwner) public {
 
         require(msg.sender = nominee[_oldOwner], "You are not the nominee for this account")
         // swapOwner(address prevOwner, address oldOwner, address newOwner)
-        //bytes memory data = abi.encodeWithSignature("transfer(address,uint256)", to, amount);
-        //require(safe.execTransactionFromModule(token, 0, data, Enum.Operation.Call), "Could not execute token transfer");
-
         bytes memory data = abi.encodeWithSignature("swapOwner(address,address,address)", _oldOwner, _oldOwner, nominee[_oldOwner]);
-
         require(
             exec(avatar, 0, data, Enum.Operation.Call),
             "Error in swapping owner"
