@@ -3,13 +3,13 @@ pragma solidity ^0.8.6;
 
 interface IGnosisSafe {
 
-	function swapOwner(address prevOwner, address oldOwner, address newOwner) public;
+	function swapOwner(address prevOwner, address oldOwner, address newOwner) external;
 
-	function isOwner(address owner) public view returns (bool);
+	function isOwner(address owner) external view returns (bool);
 
-	function getOwners() public view returns (address[] memory);
+	function getOwners() external view returns (address[] memory);
 
-    function getThreshold() public view returns (uint256);
+    function getThreshold() external view returns (uint256);
 
 
 }
