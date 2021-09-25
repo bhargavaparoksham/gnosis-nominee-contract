@@ -1,15 +1,6 @@
-# Basic Sample Hardhat Project
+# Gnosis Nominee Contract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This is a module for [Gnosis Safe](https://github.com/gnosis/safe-contracts), using which any owner of the safe can set a Nominee for their account. The nominee can take over owner's place in the safe if owner becomes inactive for more than the set time period.
 
-Try running some of the following tasks:
+The module is build using [Zodiac](https://github.com/gnosis/zodiac)
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```

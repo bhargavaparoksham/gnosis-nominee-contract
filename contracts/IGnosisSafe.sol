@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.6;
 
+// Gnosis Safe custom interface
+
 interface IGnosisSafe {
 
 	function swapOwner(address prevOwner, address oldOwner, address newOwner) external;

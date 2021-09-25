@@ -80,15 +80,12 @@ contract GnosisNominee is Module {
 
     // Function gives currentOwnerActiveTill time, if it returns 0 then current owner is inactive
 
-    function currentOwnerActiveTill(address _currentOwner) public returns(uint256) {
+    function currentOwnerActiveTill(address _currentOwner) public view returns(uint256 _currentOwnerActiveTill) {
         require(takeOverTime[_currentOwner] > 0, "Current Owner has not set a nominee & takeOverTime yet");
         require(IGnosisSafe(avatar).isOwner(_currentOwner),"The address in not an owner of the safe");
-        currentOwnerActiveTill = lastActiveTimestamp[_currentOwner] + takeOverTime[_currentOwner]
-        if(currentOwnerActiveTill > now) {
-            return currentOwnerActiveTill;
-        }
-        if(currentOwnerActiveTill <= now) {
-            return 0;
+        _currentOwnerActiveTill = lastActiveTimestamp[_currentOwner] + takeOverTime[_currentOwner];
+        if(_currentOwnerActiveTill <= block.timestamp) {
+            _currentOwnerActiveTill = 0;
         }
     }
 
@@ -97,7 +94,7 @@ contract GnosisNominee is Module {
 
     function updateOwnerStatus() public {
         require(IGnosisSafe(avatar).isOwner(msg.sender),"You need be an owner of the safe");
-        lastActiveTimestamp[msg.sender] = now;
+        lastActiveTimestamp[msg.sender] = block.timestamp;
 
     }
 
