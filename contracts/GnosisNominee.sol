@@ -68,13 +68,13 @@ contract GnosisNominee is Module {
 
     // The nominee's of the gnosis safe can transfer ownership using below function
 
-    function transferSafeOwnership(address _currentOwner) public {
+    function transferSafeOwnership(address _currentOwner, address _prevOwner) public {
 
         require(nominee[_currentOwner] == msg.sender, "You are not the nominee for this account");
         uint256 _currentOwnerActiveTill = lastActiveTimestamp[_currentOwner] + takeOverTime[_currentOwner];
         require(_currentOwnerActiveTill < block.timestamp, "Ownership transfer can be done only after current time is greater than currentOwnerActiveTill");
         // swapOwner(address prevOwner, address oldOwner, address newOwner)
-        bytes memory data = abi.encodeWithSignature("swapOwner(address,address,address)", _currentOwner, _currentOwner, nominee[_currentOwner]);
+        bytes memory data = abi.encodeWithSignature("swapOwner(address,address,address)", _prevOwner, _currentOwner, nominee[_currentOwner]);
         require(
             exec(avatar, 0, data, Enum.Operation.Call),
             "Error in swapping owner"
