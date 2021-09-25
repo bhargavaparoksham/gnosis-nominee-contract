@@ -61,6 +61,7 @@ contract GnosisNominee is Module {
         require(IGnosisSafe(avatar).isOwner(msg.sender),"You need be an owner of the safe");
         takeOverTime[msg.sender] = _takeOverTime;        
         nominee[msg.sender] = _nominee;
+        lastActiveTimestamp[msg.sender] = block.timestamp;
         //takeOverTime[msg.sender] = _takeOverTime;
     }
 
@@ -70,6 +71,8 @@ contract GnosisNominee is Module {
     function transferSafeOwnership(address _currentOwner) public {
 
         require(nominee[_currentOwner] == msg.sender, "You are not the nominee for this account");
+        uint256 _currentOwnerActiveTill = lastActiveTimestamp[_currentOwner] + takeOverTime[_currentOwner];
+        require(_currentOwnerActiveTill < block.timestamp, "Ownership transfer can be done only after current time is greater than currentOwnerActiveTill");
         // swapOwner(address prevOwner, address oldOwner, address newOwner)
         bytes memory data = abi.encodeWithSignature("swapOwner(address,address,address)", _currentOwner, _currentOwner, nominee[_currentOwner]);
         require(
@@ -78,15 +81,12 @@ contract GnosisNominee is Module {
         );
     }
 
-    // Function gives currentOwnerActiveTill time, if it returns 0 then current owner is inactive
+    // Function gives currentOwnerActiveTill time
 
     function currentOwnerActiveTill(address _currentOwner) public view returns(uint256 _currentOwnerActiveTill) {
         require(takeOverTime[_currentOwner] > 0, "Current Owner has not set a nominee & takeOverTime yet");
         require(IGnosisSafe(avatar).isOwner(_currentOwner),"The address in not an owner of the safe");
         _currentOwnerActiveTill = lastActiveTimestamp[_currentOwner] + takeOverTime[_currentOwner];
-        if(_currentOwnerActiveTill <= block.timestamp) {
-            _currentOwnerActiveTill = 0;
-        }
     }
 
 
