@@ -76,7 +76,7 @@ contract GnosisNominee is Module {
         // swapOwner(address prevOwner, address oldOwner, address newOwner)
         bytes memory data = abi.encodeWithSignature("swapOwner(address,address,address)", _prevOwner, _currentOwner, nominee[_currentOwner]);
         require(
-            exec(avatar, 0, data, Enum.Operation.DelegateCall),
+            exec(avatar, 0, data, Enum.Operation.Call),
             "Error in swapping owner"
         );
     }
