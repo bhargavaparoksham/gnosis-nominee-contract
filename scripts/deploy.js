@@ -26,7 +26,8 @@ async function main() {
 
   console.log("GnosisNominee deployed to:", gnosisNominee.address);
 
-  //gnosisNominee rinkeby address: 0xcF22faaDF8e984149E7a80dD4D7C14381471cf3D
+  //gnosisNominee rinkeby address v0: 0xcF22faaDF8e984149E7a80dD4D7C14381471cf3D
+  //gnosisNominee rinkeby address v1: 0x5973694d415645D68e83A2144E85DB100cA77b9E
 }
 
 // We recommend this pattern to be able to use async/await everywhere
