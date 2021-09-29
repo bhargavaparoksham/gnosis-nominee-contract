@@ -81,6 +81,7 @@ contract GnosisNominee is Module {
         );
     }
 
+
     // Function gives currentOwnerActiveTill time
 
     function currentOwnerActiveTill(address _currentOwner) public view returns(uint256 _currentOwnerActiveTill) {
