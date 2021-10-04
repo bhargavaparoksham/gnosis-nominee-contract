@@ -51,6 +51,7 @@ contract GnosisNominee is Module {
         
         transferOwnership(_owner);
 
+        // Nominee Modue setup event
         emit NomineeModuleSetup(msg.sender, _avatar);
     }
 
