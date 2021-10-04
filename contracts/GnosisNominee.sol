@@ -58,6 +58,7 @@ contract GnosisNominee is Module {
     // Each owner of the gnosis safe can set their nominee & takeOverTime
 
     function setNominee(address _nominee, uint256 _takeOverTime) public {
+        // Only one of the safe owners can set a nominee
         require(IGnosisSafe(avatar).isOwner(msg.sender),"You need be an owner of the safe");
         takeOverTime[msg.sender] = _takeOverTime;        
         nominee[msg.sender] = _nominee;
@@ -70,8 +71,10 @@ contract GnosisNominee is Module {
 
     function transferSafeOwnership(address _currentOwner, address _prevOwner) public {
 
+        // Only a nominee of one of the safe owner's can call this function
         require(nominee[_currentOwner] == msg.sender, "You are not the nominee for this account");
         uint256 _currentOwnerActiveTill = lastActiveTimestamp[_currentOwner] + takeOverTime[_currentOwner];
+        // Ownership can be transferred only after take over time is passed since the last time owner was active.
         require(_currentOwnerActiveTill < block.timestamp, "Ownership transfer can be done only after current time is greater than currentOwnerActiveTill");
         // swapOwner(address prevOwner, address oldOwner, address newOwner)
         bytes memory data = abi.encodeWithSignature("swapOwner(address,address,address)", _prevOwner, _currentOwner, nominee[_currentOwner]);
