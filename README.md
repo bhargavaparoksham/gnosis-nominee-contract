@@ -7,5 +7,6 @@ The module is built using [Zodiac](https://github.com/gnosis/zodiac)
 Implementation:
 1. setNominee: Using this function each owner of a gnosis safe can set their nominee & takeOverTime.
 2. transferSafeOwnership: The nominee's of the gnosis safe can transfer ownership using this function.
+3. updateOwnerStatus: Funtion that current owner needs to use to update that he is active / alive.
 
 
